@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bússola de Mercado</title>
+<style>
+  :root{
+    --bg: #e7e2d6;
+    --card: #f4f1e8;
+    --ink: #2b2823;
+    --muted: #7c766a;
+    --green: #3f6b3f;
+    --red: #a13d34;
+    --amber: #b3763f;
+    --rule: #ddd6c6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    padding:20px 16px 40px;
+  }
+  .wrap{max-width:520px;margin:0 auto;}
+  header{margin-bottom:18px;}
+  header h1{font-size:1.4rem;margin:0 0 2px;font-weight:700;}
+  header .sub{color:var(--muted);font-size:0.85rem;}
+  header .updated{
+    display:inline-block;
+    margin-top:8px;
+    font-size:0.78rem;
+    color:var(--ink);
+    background:var(--card);
+    padding:4px 12px;
+    border-radius:20px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    padding:20px 20px 22px;
+    margin-bottom:16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .card h2{
+    font-size:0.95rem;
+    font-weight:700;
+    margin:0 0 16px;
+    letter-spacing:0.01em;
+  }
+  /* Setores */
+  .sector-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .sector-row:last-child{margin-bottom:0;}
+  .sector-name{
+    width:82px;
+    flex-shrink:0;
+    font-size:0.88rem;
+  }
+  .bar-track{
+    flex:1;
+    height:8px;
+    background:var(--rule);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .bar-fill{height:100%;border-radius:4px;}
+  .bar-fill.up{background:var(--green);}
+  .bar-fill.down{background:var(--red);}
+  .sector-val{
+    width:52px;
+    text-align:right;
+    font-size:0.88rem;
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .val-up{color:var(--green);}
+  .val-down{color:var(--red);}
+  /* Classes de ativos */
+  .asset-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--rule);
+    font-size:0.9rem;
+  }
+  .asset-row:last-child{border-bottom:none;padding-bottom:0;}
+  .asset-row .label{color:var(--ink);}
+  .asset-row .value{font-weight:600;}
+  /* Indicador grande (Fear&Greed / VIX) */
+  .gauge-value{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .gauge-value .num{font-size:2.4rem;font-weight:700;line-height:1;}
+  .gauge-value .tag{
+    font-size:0.85rem;
+    color:var(--muted);
+    padding:3px 10px;
+    background:var(--rule);
+    border-radius:20px;
+  }
+  .tag.warn{background:#e8d9c3;color:#7a4f1f;}
+  .tag.fear{background:#e3d3c9;color:#8a3f2f;}
+  .hist{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px 4px;
+    border-top:1px solid var(--rule);
+    padding-top:12px;
+  }
+  .hist div{font-size:0.72rem;color:var(--muted);text-align:center;}
+  .hist div b{
+    display:block;
+    font-size:0.86rem;
+    color:var(--ink);
+    font-weight:600;
+    margin-top:2px;
+  }
+  /* Setores - mosaico */
+  .mosaic{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .tile{
+    border-radius:12px;
+    padding:14px 12px;
+    color:#fff;
+  }
+  .tile .t-name{font-size:0.78rem;opacity:0.9;text-transform:lowercase;}
+  .tile .t-val{font-size:1.15rem;font-weight:700;margin-top:4px;}
+  .tile.up{background:var(--green);}
+  .tile.down{background:var(--red);}
+  .tile.flat{background:#9a9484;}
+  /* Setores - linhas ordenadas, barra proporcional (Opção I) */
+  .list-i{display:flex;flex-direction:column;gap:14px;}
+  .row-i{display:flex;align-items:center;gap:12px;}
+  .row-i .name-i{width:82px;flex-shrink:0;font-size:0.85rem;}
+  .row-i .track-i{flex:1;height:8px;background:var(--rule);border-radius:4px;overflow:hidden;}
+  .row-i .fill-i{height:100%;border-radius:4px;}
+  .row-i .fill-i.down{background:var(--red);}
+  .row-i .fill-i.up{background:var(--green);}
+  .row-i .val-i{width:54px;text-align:right;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+  .reading{
+    font-size:0.92rem;
+    line-height:1.45;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid var(--rule);
+    color:var(--ink);
+  }
+  .reading b{display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);margin-bottom:6px;font-weight:600;}
+  /* Pares lado a lado */
+  .pair{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .pair .card{margin-bottom:0;padding:16px 16px 18px;}
+  .pair .gauge-value{margin-bottom:8px;}
+  .pair .gauge-value .num{font-size:1.9rem;}
+  .pair .comment{
+    font-size:0.8rem;
+    color:var(--muted);
+    line-height:1.4;
+    border-top:1px solid var(--rule);
+    padding-top:10px;
+    margin-top:2px;
+  }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.75rem;
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Bússola de Mercado</h1>
+    <div class="sub">Pede "atualiza a bússola" de manhã · dados do fecho anterior</div>
+    <div class="updated">Atualizado a 16 de agosto de 2026 · dados de sexta-feira, 14 de agosto (mercados fechados ao fim de semana)</div>
+  </header>
+
+  <!-- F&G + VIX lado a lado -->
+  <div class="pair">
+    <div class="card">
+      <h2>Fear &amp; Greed</h2>
+      <div class="gauge-value">
+        <div class="num">65</div>
+        <div class="tag" style="background:#dbe6d3;color:#3f6b3f;">greed</div>
+      </div>
+      <div class="comment">Sentimento mantém-se otimista, sem sinais de euforia extrema.</div>
+    </div>
+    <div class="card">
+      <h2>VIX</h2>
+      <div class="gauge-value">
+        <div class="num">14.25</div>
+        <div class="tag" style="background:#dbe6d3;color:#3f6b3f;">calmo</div>
+      </div>
+      <div class="comment">Volatilidade continua a cair, mercado tranquilo.</div>
+    </div>
+  </div>
+
+  <!-- S&P 500 -->
+  <div class="card">
+    <h2>S&amp;P 500</h2>
+    <div class="gauge-value">
+      <div class="num">7 786</div>
+      <div class="tag" style="background:#e8d9c3;color:#7a4f1f;">-0.17% hoje</div>
+    </div>
+    <div class="hist">
+      <div>1 sem<b>+0.4%</b></div>
+      <div>1 mês<b>+2.8%</b></div>
+      <div>6 meses<b>+12.2%</b></div>
+      <div>1 ano<b>+20.6%</b></div>
+    </div>
+  </div>
+
+  <!-- YIELD 10 ANOS -->
+  <div class="card">
+    <h2>Yield 10 anos</h2>
+    <div class="gauge-value">
+      <div class="num">4.68%</div>
+      <div class="tag">+0.02 hoje</div>
+    </div>
+    <div class="hist">
+      <div>ontem<b>≈4.66%</b></div>
+      <div>1 sem<b>4.75%</b></div>
+      <div>1 mês<b>4.56%</b></div>
+      <div>1 ano<b>4.26%</b></div>
+    </div>
+  </div>
+
+  <!-- CLASSES DE ATIVOS -->
+  <div class="card">
+    <h2>Classes de ativos · hoje</h2>
+    <div class="asset-row">
+      <div class="label">ouro</div>
+      <div class="value">≈ $4 437/oz</div>
+    </div>
+    <div class="asset-row">
+      <div class="label">petróleo (WTI)</div>
+      <div class="value">≈ $82.40/barril</div>
+    </div>
+  </div>
+
+  <!-- SETORES - LINHAS ORDENADAS, BARRA PROPORCIONAL -->
+  <div class="card">
+    <h2>Setores · variação hoje</h2>
+    <div class="list-i">
+      <div class="row-i">
+        <div class="name-i">tecnologia</div>
+        <div class="track-i"><div class="fill-i down" style="width:100%;"></div></div>
+        <div class="val-i" style="color:var(--red);">-0.53%</div>
+      </div>
+      <div class="row-i">
+        <div class="name-i">comunicação</div>
+        <div class="track-i"><div class="fill-i down" style="width:9.4%;"></div></div>
+        <div class="val-i" style="color:var(--red);">-0.05%</div>
+      </div>
+      <div class="row-i">
+        <div class="name-i">financeiro</div>
+        <div class="track-i"><div class="fill-i down" style="width:3.8%;"></div></div>
+        <div class="val-i" style="color:var(--muted);">-0.02%</div>
+      </div>
+      <div class="row-i">
+        <div class="name-i">industriais</div>
+        <div class="track-i"><div class="fill-i up" style="width:47.2%;"></div></div>
+        <div class="val-i" style="color:var(--green);">+0.25%</div>
+      </div>
+      <div class="row-i">
+        <div class="name-i">energia</div>
+        <div class="track-i"><div class="fill-i up" style="width:94.3%;"></div></div>
+        <div class="val-i" style="color:var(--green);">+0.50%</div>
+      </div>
+    </div>
+    <div class="reading">
+      <b>Leitura do dia</b>
+      Dia ambíguo, sem sinal claro: sessão calma e de amplitude estreita, com o S&amp;P a recuar ligeiramente do máximo histórico de quinta-feira depois de vendas a retalho e sentimento do consumidor mais fracos. Tecnologia consolidou os ganhos recentes; energia aguentou-se com a subida do petróleo. Nota: os valores por setor de hoje são uma aproximação (dados fechados do fim de semana mais difíceis de confirmar ao pormenor).
+    </div>
+  </div>
+
+  <footer>Sem apetite de risco · versão leve</footer>
+
+</div>
+</body>
+</html>
