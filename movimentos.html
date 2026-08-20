@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movimentos · Bússola de Mercado</title>
+<style>
+  :root{
+    --bg: #e7e2d6;
+    --card: #f4f1e8;
+    --ink: #2b2823;
+    --muted: #7c766a;
+    --green: #3f6b3f;
+    --red: #a13d34;
+    --amber: #b3763f;
+    --rule: #ddd6c6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    padding:20px 16px 40px;
+  }
+  .wrap{max-width:520px;margin:0 auto;}
+  header{margin-bottom:18px;}
+  header h1{font-size:1.4rem;margin:0 0 2px;font-weight:700;}
+  header .sub{color:var(--muted);font-size:0.85rem;}
+  header .updated{
+    display:inline-block;
+    margin-top:8px;
+    font-size:0.78rem;
+    color:var(--ink);
+    background:var(--card);
+    padding:4px 12px;
+    border-radius:20px;
+  }
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .tabs a{
+    flex:1;
+    text-align:center;
+    padding:9px 12px;
+    border-radius:20px;
+    font-size:0.82rem;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--muted);
+    background:var(--card);
+  }
+  .tabs a.active{
+    color:#fff;
+    background:var(--ink);
+  }
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    padding:20px 20px 22px;
+    margin-bottom:16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .card h2{
+    font-size:0.95rem;
+    font-weight:700;
+    margin:0 0 14px;
+    letter-spacing:0.01em;
+  }
+  /* Lista de movimentos */
+  .movers{display:flex;flex-direction:column;}
+  .mover-row{padding:12px 0;border-bottom:1px solid var(--rule);}
+  .mover-row:first-child{padding-top:0;}
+  .mover-row:last-child{border-bottom:none;padding-bottom:0;}
+  .mover-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:3px;
+  }
+  .mover-ticker{font-weight:700;font-size:0.95rem;letter-spacing:0.02em;}
+  .mover-pct{font-weight:700;font-size:0.95rem;}
+  .mover-pct.up{color:var(--green);}
+  .mover-pct.down{color:var(--red);}
+  .mover-meta{font-size:0.8rem;color:var(--muted);margin-bottom:5px;}
+  .mover-note{font-size:0.85rem;line-height:1.42;color:var(--ink);}
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.75rem;
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Maiores Subidas e Descidas</h1>
+    <div class="sub">Os 5 tickers do S&amp;P 500 que mais se moveram na sessão anterior</div>
+    <div class="updated">Atualizado a 20 de agosto de 2026 · dados de quarta-feira, 19 de agosto</div>
+  </header>
+
+  <div class="tabs">
+    <a href="index.html">Bússola</a>
+    <a href="movimentos.html" class="active">Movimentos</a>
+    <a href="analise.html">Análise</a>
+  </div>
+
+  <!-- MAIORES SUBIDAS -->
+  <div class="card">
+    <h2>Maiores subidas</h2>
+    <div class="movers">
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">MRNA</span>
+          <span class="mover-pct up">+177%</span>
+        </div>
+        <div class="mover-meta">Moderna · Saúde (biotecnologia)</div>
+        <div class="mover-note">Disparou depois de dados positivos de fase 3 de uma vacina personalizada contra o cancro, em parceria com a Merck.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">MRK</span>
+          <span class="mover-pct up">+13%</span>
+        </div>
+        <div class="mover-meta">Merck &amp; Co. · Saúde (farmacêutica)</div>
+        <div class="mover-note">Beneficiou dos mesmos resultados do ensaio com a Moderna, que combina o seu Keytruda com a terapia experimental.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">TGT</span>
+          <span class="mover-pct up">+4%</span>
+        </div>
+        <div class="mover-meta">Target · Consumo discricionário (retalho)</div>
+        <div class="mover-note">Resultados do 2º trimestre acima do esperado, com vendas em lojas comparáveis a subir e revisão em alta das previsões anuais.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">SHW</span>
+          <span class="mover-pct up">+2.8%</span>
+        </div>
+        <div class="mover-meta">Sherwin-Williams · Materiais (tintas e revestimentos)</div>
+        <div class="mover-note">Entre os destaques do Dow Jones do dia; sem catalisador específico identificado, acompanhou o alívio geral dos yields.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">HD</span>
+          <span class="mover-pct up">+2.0%</span>
+        </div>
+        <div class="mover-meta">Home Depot · Consumo discricionário (retalho/construção)</div>
+        <div class="mover-note">Ganhou com a descida dos yields, que favorece setores sensíveis a taxas de juro como a construção e a habitação.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIORES DESCIDAS -->
+  <div class="card">
+    <h2>Maiores descidas</h2>
+    <div class="movers">
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">SNDK</span>
+          <span class="mover-pct down">-9%</span>
+        </div>
+        <div class="mover-meta">Sandisk · Tecnologia (semicondutores/memória)</div>
+        <div class="mover-note">Recuou com fraqueza mais alargada no setor dos chips.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">VIK</span>
+          <span class="mover-pct down">-4%</span>
+        </div>
+        <div class="mover-meta">Viking Holdings · Consumo discricionário (cruzeiros/turismo)</div>
+        <div class="mover-note">Caiu depois de avisar que o nível baixo dos rios na Europa pode perturbar as operações de cruzeiros fluviais.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">CAT</span>
+          <span class="mover-pct down">-2.2%</span>
+        </div>
+        <div class="mover-meta">Caterpillar · Industriais (máquinas e equipamento)</div>
+        <div class="mover-note">Entre os principais penalizados do Dow Jones do dia; sem catalisador específico identificado.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">GS</span>
+          <span class="mover-pct down">-2.0%</span>
+        </div>
+        <div class="mover-meta">Goldman Sachs · Financeiro (banca de investimento)</div>
+        <div class="mover-note">Recuou junto com outros grandes bancos; sem notícia específica confirmada para o movimento.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">JPM</span>
+          <span class="mover-pct down">-1.2%</span>
+        </div>
+        <div class="mover-meta">JPMorgan Chase · Financeiro (banca)</div>
+        <div class="mover-note">Ligeira correção junto com o setor financeiro; sem notícia específica confirmada para o movimento.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Sessão anterior · S&amp;P 500</footer>
+
+</div>
+</body>
+</html>
