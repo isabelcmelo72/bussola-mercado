@@ -183,6 +183,27 @@
     font-size:0.75rem;
     margin-top:4px;
   }
+  /* Separadores de navegação */
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .tabs a{
+    flex:1;
+    text-align:center;
+    padding:9px 12px;
+    border-radius:20px;
+    font-size:0.82rem;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--muted);
+    background:var(--card);
+  }
+  .tabs a.active{
+    color:#fff;
+    background:var(--ink);
+  }
 </style>
 </head>
 <body>
@@ -193,6 +214,11 @@
     <div class="sub">Pede "atualiza a bússola" de manhã · dados do fecho anterior</div>
     <div class="updated">Atualizado a 20 de agosto de 2026 · dados de quarta-feira, 19 de agosto</div>
   </header>
+
+  <div class="tabs">
+    <a href="index.html" class="active">Bússola</a>
+    <a href="analise.html">Análise</a>
+  </div>
 
   <!-- F&G + VIX lado a lado -->
   <div class="pair">
@@ -244,15 +270,26 @@
     </div>
   </div>
 
-  <!-- CLASSES DE ATIVOS -->
+  <!-- OURO -->
   <div class="card">
-    <h2>Classes de ativos · hoje</h2>
-    <div class="asset-row">
-      <div class="label">ouro</div>
-      <div class="value">≈ $4 470/oz</div>
+    <h2>Ouro</h2>
+    <div class="gauge-value">
+      <div class="num">$4 493</div>
+      <div class="tag" style="background:#dbe6d3;color:#3f6b3f;">+3.66% hoje</div>
     </div>
+    <div class="hist">
+      <div>1 sem<b>+2.4%</b></div>
+      <div>1 mês<b>+12.1%</b></div>
+      <div>6 meses<b>≈+14%</b></div>
+      <div>1 ano<b>+34.3%</b></div>
+    </div>
+  </div>
+
+  <!-- PETRÓLEO -->
+  <div class="card">
+    <h2>Petróleo (WTI) · hoje</h2>
     <div class="asset-row">
-      <div class="label">petróleo (WTI)</div>
+      <div class="label">preço</div>
       <div class="value">≈ $85.50/barril</div>
     </div>
   </div>
