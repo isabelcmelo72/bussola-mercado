@@ -86,14 +86,6 @@
   .mover-pct.down{color:var(--red);}
   .mover-meta{font-size:0.8rem;color:var(--muted);margin-bottom:5px;}
   .mover-note{font-size:0.85rem;line-height:1.42;color:var(--ink);}
-  .note{
-    font-size:0.8rem;
-    color:var(--muted);
-    line-height:1.4;
-    margin-top:14px;
-    padding-top:12px;
-    border-top:1px solid var(--rule);
-  }
   footer{
     text-align:center;
     color:var(--muted);
@@ -107,8 +99,8 @@
 
   <header>
     <h1>Maiores Subidas e Descidas</h1>
-    <div class="sub">Os tickers do S&amp;P 500 que mais se moveram na sessão anterior</div>
-    <div class="updated">Atualizado a 29 de agosto de 2026 · dados de sexta-feira, 28 de agosto</div>
+    <div class="sub">Os 5 tickers do S&amp;P 500 que mais se moveram na sessão anterior</div>
+    <div class="updated">Atualizado a 1 de setembro de 2026 · dados de segunda-feira, 31 de agosto</div>
   </header>
 
   <div class="tabs">
@@ -123,30 +115,45 @@
     <div class="movers">
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">ESTC</span>
-          <span class="mover-pct up">≈+21%</span>
+          <span class="mover-ticker">CRWD</span>
+          <span class="mover-pct up">+5.0%</span>
         </div>
-        <div class="mover-meta">Elastic · Tecnologia (software/pesquisa com IA)</div>
-        <div class="mover-note">Resultados muito acima do esperado, com o backlog de contratos (RPO) a crescer 21% e guidance para o próximo ano revista em alta.</div>
+        <div class="mover-meta">CrowdStrike · Tecnologia (cibersegurança)</div>
+        <div class="mover-note">Continuou a recuperação recente, voltando a negociar acima das médias móveis de curto prazo.</div>
       </div>
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">GAP</span>
-          <span class="mover-pct up">+13.8%</span>
+          <span class="mover-ticker">TSLA</span>
+          <span class="mover-pct up">+4.9%</span>
         </div>
-        <div class="mover-meta">Gap Inc. · Consumo discricionário (retalho de vestuário)</div>
-        <div class="mover-note">Resultados do 2º trimestre acima do esperado e revisão em alta da guidance de lucro por ação, impulsionados pelo crescimento da marca.</div>
+        <div class="mover-meta">Tesla · Consumo discricionário (veículos elétricos)</div>
+        <div class="mover-note">Subiu depois de cortar o preço do Model 3 de entrada em Hong Kong e Macau — o mercado interpretou como defesa de quota num mercado competitivo.</div>
       </div>
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">AFRM</span>
-          <span class="mover-pct up">≈+9.5%</span>
+          <span class="mover-ticker">ULTA</span>
+          <span class="mover-pct up">+4.1%</span>
         </div>
-        <div class="mover-meta">Affirm Holdings · Financeiro (crédito ao consumo/"compre agora, pague depois")</div>
-        <div class="mover-note">Resultados trimestrais fortes, com volume de transações e número de clientes ativos a crescer, e projeções para 2027 acima do esperado.</div>
+        <div class="mover-meta">Ulta Beauty · Consumo discricionário (retalho de beleza)</div>
+        <div class="mover-note">Continuou a tendência de recuperação recente, negociando acima das médias móveis de 20 e 50 dias.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">SLB</span>
+          <span class="mover-pct up">+4.0%</span>
+        </div>
+        <div class="mover-meta">SLB (Schlumberger) · Energia (serviços petrolíferos)</div>
+        <div class="mover-note">Beneficiou diretamente da subida do petróleo, com a escalada entre os EUA e o Irão.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">QCOM</span>
+          <span class="mover-pct up">+3.7%</span>
+        </div>
+        <div class="mover-meta">Qualcomm · Tecnologia (semicondutores)</div>
+        <div class="mover-note">Sem notícia específica confirmada para o movimento.</div>
       </div>
     </div>
-    <div class="note">Hoje só foi possível confirmar com boa confiança 3 grandes subidas — muitos nomes de tecnologia e IA (Marvell, CrowdStrike, Palo Alto) caíram apesar de baterem expectativas, um dia de "vender a notícia" difícil de resumir em poucos tickers extra.</div>
   </div>
 
   <!-- MAIORES DESCIDAS -->
@@ -155,30 +162,45 @@
     <div class="movers">
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">PYPL</span>
-          <span class="mover-pct down">≈-13%</span>
+          <span class="mover-ticker">EIX</span>
+          <span class="mover-pct down">-23.1%</span>
         </div>
-        <div class="mover-meta">PayPal · Financeiro (pagamentos digitais)</div>
-        <div class="mover-note">A maior queda da sessão, depois de o consórcio Advent-Stripe desistir de um plano de compra da empresa avaliado em $50 mil milhões.</div>
+        <div class="mover-meta">Edison International · Utilities (eletricidade, Califórnia)</div>
+        <div class="mover-note">A maior queda da sessão e o pior dia desde 2001 — não encontrámos ainda o motivo exato, mas o movimento conjunto com a PG&E sugere receios relacionados com responsabilidade civil por incêndios florestais na Califórnia.</div>
       </div>
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">RBRK</span>
-          <span class="mover-pct down">≈-11%</span>
+          <span class="mover-ticker">PCG</span>
+          <span class="mover-pct down">-19.0%</span>
         </div>
-        <div class="mover-meta">Rubrik · Tecnologia (segurança de dados/cloud)</div>
-        <div class="mover-note">Caiu apesar de resultados sólidos — mercado à procura de perfeição em nomes de crescimento ligados a dados e IA.</div>
+        <div class="mover-meta">PG&amp;E · Utilities (eletricidade, Califórnia)</div>
+        <div class="mover-note">Pior dia desde 2020, movendo-se em conjunto com a Edison International — mesmo setor e geografia.</div>
       </div>
       <div class="mover-row">
         <div class="mover-top">
-          <span class="mover-ticker">MRVL</span>
-          <span class="mover-pct down">-9%</span>
+          <span class="mover-ticker">AON</span>
+          <span class="mover-pct down">-8.5%</span>
         </div>
-        <div class="mover-meta">Marvell Technology · Tecnologia (semicondutores/IA)</div>
-        <div class="mover-note">Recuou apesar de bater as expectativas — a guidance de margem bruta desiludiu, apesar de reservas de encomendas de IA fortes.</div>
+        <div class="mover-meta">Aon plc · Financeiro (corretagem de seguros)</div>
+        <div class="mover-note">Sem notícia específica confirmada para o movimento.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">TTWO</span>
+          <span class="mover-pct down">-6.7%</span>
+        </div>
+        <div class="mover-meta">Take-Two Interactive · Comunicação (jogos de vídeo)</div>
+        <div class="mover-note">Sem notícia específica confirmada para o movimento.</div>
+      </div>
+      <div class="mover-row">
+        <div class="mover-top">
+          <span class="mover-ticker">HWM</span>
+          <span class="mover-pct down">-6.2%</span>
+        </div>
+        <div class="mover-meta">Howmet Aerospace · Industriais (componentes aeroespaciais)</div>
+        <div class="mover-note">Sem notícia específica confirmada para o movimento.</div>
       </div>
     </div>
-    <div class="note">Hoje só foi possível confirmar com boa confiança 3 grandes descidas.</div>
   </div>
 
   <footer>Sessão anterior · S&amp;P 500</footer>
