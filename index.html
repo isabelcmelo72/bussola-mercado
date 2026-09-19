@@ -43,14 +43,18 @@
   }
   .tabs a{
     flex:1;
+    min-width:0;
     text-align:center;
-    padding:9px 12px;
+    padding:9px 6px;
     border-radius:20px;
-    font-size:0.82rem;
+    font-size:0.74rem;
     font-weight:600;
     text-decoration:none;
     color:var(--muted);
     background:var(--card);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .tabs a.active{
     color:#fff;
@@ -202,6 +206,7 @@
     <a href="index.html" class="active">Bússola</a>
     <a href="movimentos.html">Movimentos</a>
     <a href="analise.html">Análise</a>
+    <a href="historico.html">Histórico</a>
   </div>
 
   <!-- F&G + VIX lado a lado -->
