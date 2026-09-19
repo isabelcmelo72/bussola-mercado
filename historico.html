@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histórico · Bússola de Mercado</title>
+<style>
+  :root{
+    --bg: #e7e2d6;
+    --card: #f4f1e8;
+    --ink: #2b2823;
+    --muted: #7c766a;
+    --green: #3f6b3f;
+    --red: #a13d34;
+    --amber: #b3763f;
+    --rule: #ddd6c6;
+    --row-alt: #ece7da;
+    --row-red: #f3ddd8;
+    --row-green: #dfe9d9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    padding:20px 16px 40px;
+  }
+  .wrap{max-width:520px;margin:0 auto;}
+  header{margin-bottom:18px;}
+  header h1{font-size:1.4rem;margin:0 0 2px;font-weight:700;}
+  header .sub{color:var(--muted);font-size:0.85rem;}
+  .notice{
+    background:#fbf6e3;
+    border:1px solid #e3d7a3;
+    border-radius:12px;
+    padding:12px 14px;
+    font-size:0.82rem;
+    line-height:1.45;
+    margin-bottom:18px;
+    color:#6b5a1f;
+  }
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .tabs a{
+    flex:1;
+    min-width:0;
+    text-align:center;
+    padding:9px 6px;
+    border-radius:20px;
+    font-size:0.74rem;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--muted);
+    background:var(--card);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .tabs a.active{
+    color:#fff;
+    background:var(--ink);
+  }
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    padding:16px 16px 18px;
+    margin-bottom:16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .card h2{
+    font-size:0.95rem;
+    font-weight:700;
+    margin:0 0 4px;
+  }
+  .card .legend{
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-bottom:14px;
+    line-height:1.4;
+  }
+  .legend .dot{
+    display:inline-block;
+    width:9px;height:9px;
+    border-radius:50%;
+    margin-right:4px;
+    vertical-align:middle;
+  }
+  .dot-red{background:var(--row-red);border:1px solid var(--red);}
+  .dot-green{background:var(--row-green);border:1px solid var(--green);}
+  .table-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border-radius:10px;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:760px;
+    font-size:0.78rem;
+  }
+  th, td{
+    padding:8px 10px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  th:first-child, td:first-child{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:1;
+    max-width:70px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  thead th{
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--muted);
+    font-weight:700;
+    border-bottom:1px solid var(--rule);
+    background:var(--card);
+    position:sticky;
+    top:0;
+    z-index:2;
+  }
+  thead th:first-child{background:var(--card);z-index:3;}
+  .table-legend{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid var(--rule);
+    font-size:0.74rem;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  tbody tr:nth-child(odd){background:var(--row-alt);}
+  tbody tr:nth-child(odd) td:first-child{background:var(--row-alt);}
+  tbody tr:nth-child(even) td:first-child{background:var(--card);}
+  tbody tr.fear-row{background:var(--row-red);}
+  tbody tr.fear-row td:first-child{background:var(--row-red);}
+  tbody tr.greed-row{background:var(--row-green);}
+  tbody tr.greed-row td:first-child{background:var(--row-green);}
+  .val-up{color:var(--green);}
+  .val-down{color:var(--red);}
+  .approx{color:var(--muted);font-weight:400;}
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.75rem;
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Bússola de Mercado</h1>
+    <div class="sub">Histórico diário de Fear &amp; Greed, VIX e restantes indicadores</div>
+  </header>
+
+  <div class="tabs">
+    <a href="index.html">Bússola</a>
+    <a href="movimentos.html">Movimentos</a>
+    <a href="analise.html">Análise</a>
+    <a href="historico.html" class="active">Histórico</a>
+  </div>
+
+  <div class="card">
+    <h2>Histórico diário</h2>
+    <div class="legend">
+      <span class="dot dot-red"></span>Medo: Fear&amp;Greed ≤25 <b>e</b> VIX ≥22 no mesmo dia &nbsp;&nbsp;
+      <span class="dot dot-green"></span>Ganância: Fear&amp;Greed ≥65 <b>e</b> VIX ≤18 no mesmo dia
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>F&amp;G</th>
+            <th>VIX</th>
+            <th>S&amp;P 500</th>
+            <th>Yield 10a</th>
+            <th>Ouro</th>
+            <th>Petróleo</th>
+            <th>EUR/USD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sex 18/09</td>
+            <td>29</td>
+            <td>14.85</td>
+            <td>7 650 <span class="val-up">+0.17%</span></td>
+            <td>5.01%</td>
+            <td>$4 418</td>
+            <td>$95.5</td>
+            <td>1.146</td>
+          </tr>
+          <tr>
+            <td>Qui 17/09</td>
+            <td class="approx">≈31</td>
+            <td class="approx">≈15.5</td>
+            <td>7 638 <span class="val-up">+1.14%</span></td>
+            <td>4.95%</td>
+            <td class="approx">≈$4 390</td>
+            <td class="approx">≈$101.5</td>
+            <td class="approx">≈1.148</td>
+          </tr>
+          <tr>
+            <td>Qua 16/09 🏛️</td>
+            <td>29</td>
+            <td class="approx">≈17.7</td>
+            <td>7 552 <span class="val-down">-0.45%</span></td>
+            <td>5.02%</td>
+            <td>$4 340</td>
+            <td class="approx">≈$103</td>
+            <td class="approx">≈1.148</td>
+          </tr>
+          <tr>
+            <td>Ter 15/09</td>
+            <td>30</td>
+            <td>17.20</td>
+            <td>7 586 <span class="val-down">-0.45%</span></td>
+            <td>5.01%</td>
+            <td>$4 263</td>
+            <td class="approx">≈$105</td>
+            <td>1.154</td>
+          </tr>
+          <tr>
+            <td>Seg 14/09</td>
+            <td>31</td>
+            <td class="approx">≈17.5</td>
+            <td>7 620 <span class="val-down">-0.48%</span></td>
+            <td>4.97%</td>
+            <td>$4 284</td>
+            <td>$102</td>
+            <td>1.157</td>
+          </tr>
+          <tr>
+            <td>Sex 11/09</td>
+            <td>31</td>
+            <td>15.84</td>
+            <td>7 657 <span class="val-up">+0.86%</span></td>
+            <td>4.96%</td>
+            <td>$4 386</td>
+            <td>$100</td>
+            <td>1.160</td>
+          </tr>
+          <tr>
+            <td>Qui 10/09</td>
+            <td>35</td>
+            <td>17.89</td>
+            <td>7 592 <span class="val-down">-0.58%</span></td>
+            <td>4.95%</td>
+            <td>$4 405</td>
+            <td>$102</td>
+            <td>1.163</td>
+          </tr>
+          <tr>
+            <td>Qua 09/09</td>
+            <td>39</td>
+            <td class="approx">≈16.6</td>
+            <td>7 636 <span class="val-down">-0.48%</span></td>
+            <td>4.83%</td>
+            <td>$4 424</td>
+            <td>$97</td>
+            <td>1.165</td>
+          </tr>
+          <tr>
+            <td colspan="8" style="text-align:center;color:var(--muted);font-style:italic;background:transparent;position:static;max-width:none;overflow:visible;text-overflow:clip;">— sem dados entre 31 de julho e 9 de setembro (falha no registo) —</td>
+          </tr>
+          <tr>
+            <td>30 Jul</td>
+            <td>38</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>27 Jul</td>
+            <td>39</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>24 Jul</td>
+            <td>39</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>23 Jul</td>
+            <td>43</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>21 Jul</td>
+            <td>40</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>20 Jul</td>
+            <td>37</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>09 Jul</td>
+            <td>42</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>25 Jun</td>
+            <td>27</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>23 Jun</td>
+            <td>34</td>
+            <td>20</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>22 Jun</td>
+            <td>37</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>18 Jun</td>
+            <td>32</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>17 Jun</td>
+            <td>40</td>
+            <td>16</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>15 Jun</td>
+            <td>34</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>12 Jun</td>
+            <td>31</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>11 Jun</td>
+            <td>27</td>
+            <td>21</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>10 Jun</td>
+            <td>34</td>
+            <td>21</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>09 Jun</td>
+            <td>39</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>08 Jun</td>
+            <td>42</td>
+            <td>20</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>05 Jun</td>
+            <td>55</td>
+            <td>16</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>03 Jun</td>
+            <td>57</td>
+            <td>16</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>01 Jun</td>
+            <td>59</td>
+            <td>16</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>28 Mai</td>
+            <td>61</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>27 Mai</td>
+            <td>61</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>26 Mai</td>
+            <td>59</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>25 Mai</td>
+            <td>59</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>22 Mai</td>
+            <td>60</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>21 Mai</td>
+            <td>61</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>20 Mai</td>
+            <td>59</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>19 Mai</td>
+            <td>62</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>18 Mai</td>
+            <td>63</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="greed-row">
+            <td>14 Mai</td>
+            <td>66</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="greed-row">
+            <td>13 Mai</td>
+            <td>66</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>12 Mai</td>
+            <td>66</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="greed-row">
+            <td>06 Mai</td>
+            <td>67</td>
+            <td>17</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>30 Abr</td>
+            <td>63</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>29 Abr</td>
+            <td>64</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="greed-row">
+            <td>28 Abr</td>
+            <td>68</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>27 Abr</td>
+            <td>66</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>24 Abr</td>
+            <td>67</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>23 Abr</td>
+            <td>69</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>22 Abr</td>
+            <td>68</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>21 Abr</td>
+            <td>71</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>20 Abr</td>
+            <td>68</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>17 Abr</td>
+            <td>63</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>16 Abr</td>
+            <td>58</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>15 Abr</td>
+            <td>49</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>14 Abr</td>
+            <td>42</td>
+            <td>18</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>13 Abr</td>
+            <td>38</td>
+            <td>21</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>10 Abr</td>
+            <td>37</td>
+            <td>19</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>08 Abr</td>
+            <td>22</td>
+            <td>20</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>07 Abr</td>
+            <td>23</td>
+            <td>24</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>02 Abr</td>
+            <td>14</td>
+            <td>26</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>01 Abr</td>
+            <td>14</td>
+            <td>25</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>31 Mar</td>
+            <td>13</td>
+            <td>29</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>30 Mar</td>
+            <td>10</td>
+            <td>30</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>27 Mar</td>
+            <td>17</td>
+            <td>28</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>26 Mar</td>
+            <td>18</td>
+            <td>27</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>25 Mar</td>
+            <td>20</td>
+            <td>25</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>24 Mar</td>
+            <td>16</td>
+            <td>26</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>23 Mar</td>
+            <td>12</td>
+            <td>29</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>19 Mar</td>
+            <td>17</td>
+            <td>25</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>18 Mar</td>
+            <td>20</td>
+            <td>23</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>16 Mar</td>
+            <td>22</td>
+            <td>26</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>13 Mar</td>
+            <td>20</td>
+            <td>27</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr class="fear-row">
+            <td>12 Mar</td>
+            <td>24</td>
+            <td>25</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>09 Mar</td>
+            <td>27</td>
+            <td>26</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+          <tr>
+            <td>02 Mar</td>
+            <td>39</td>
+            <td>21</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+            <td class="approx">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-legend">
+      🏛️ = dia de decisão da Fed. (À medida que forem surgindo outros tipos de dias relevantes — CPI, triple witching, etc. — acrescento aqui o símbolo correspondente.)<br>
+      Com o limiar do VIX ajustado para ≤18: dos 75 dias na tabela, 15 ativam o vermelho (12 de março a 2 de abril) e 4 ativam o verde (28 de abril, 6, 13 e 14 de maio — o rescaldo da recuperação depois do medo extremo de março).
+    </div>
+  </div>
+
+  <footer>Histórico diário · Bússola de Mercado</footer>
+
+</div>
+</body>
+</html>
