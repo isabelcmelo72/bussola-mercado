@@ -185,6 +185,43 @@
     padding-top:10px;
     margin-top:2px;
   }
+  /* O que vem aí */
+  .ahead h2{margin-bottom:4px;}
+  .ahead .ahead-sub{font-size:0.78rem;color:var(--muted);margin-bottom:14px;}
+  .ahead .day{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--muted);
+    font-weight:600;
+    margin:14px 0 6px;
+  }
+  .ahead .day:first-of-type{margin-top:0;}
+  .ahead .ev{
+    padding:10px 0;
+    border-top:1px solid var(--rule);
+    font-size:0.9rem;
+    line-height:1.4;
+  }
+  .ahead .ev .ev-name{font-weight:700;}
+  .ahead .ev .ev-when{
+    display:inline-block;
+    margin-left:6px;
+    font-size:0.75rem;
+    font-weight:600;
+    padding:2px 9px;
+    border-radius:20px;
+    background:#e8d9c3;
+    color:#7a4f1f;
+    white-space:nowrap;
+  }
+  .ahead .ev .ev-desc{color:var(--muted);font-size:0.8rem;margin-top:3px;}
+  .ahead .none{
+    padding:10px 0;
+    border-top:1px solid var(--rule);
+    font-size:0.88rem;
+    color:var(--muted);
+  }
   footer{
     text-align:center;
     color:var(--muted);
@@ -199,7 +236,7 @@
   <header>
     <h1>Bússola de Mercado</h1>
     <div class="sub">Pede "atualiza a bússola" de manhã · dados do fecho anterior</div>
-    <div class="updated">Atualizado a 17 de outubro de 2026 · dados de sexta-feira, 16 de outubro</div>
+    <div class="updated">Atualizado a 19 de outubro de 2026 · dados de sexta-feira, 16 de outubro</div>
   </header>
 
   <div class="tabs">
@@ -207,6 +244,25 @@
     <a href="movimentos.html">Movimentos</a>
     <a href="analise.html">Análise</a>
     <a href="historico.html">Histórico</a>
+  </div>
+
+  <!-- O QUE VEM AÍ -->
+  <div class="card ahead">
+    <h2>O que vem aí</h2>
+    <div class="ahead-sub">Hoje e o dia útil seguinte · horas de Lisboa</div>
+
+    <div class="day">Hoje · segunda-feira, 19 de outubro</div>
+    <div class="none">Sem resultados de empresas acompanhadas e sem intervenções da Fed na agenda oficial. Calendário de dados macro (economia) não confirmado.</div>
+
+    <div class="day">Amanhã · terça-feira, 20 de outubro</div>
+    <div class="ev">
+      <span class="ev-name">ABB</span><span class="ev-when">≈ 05:45 · antes da abertura</span>
+      <div class="ev-desc">Resultados do 3.º trimestre. Empresa suíça de equipamento elétrico, automação e robótica industrial. A hora (06:45 na Suíça) vem de uma só fonte, por isso fica por confirmar.</div>
+    </div>
+    <div class="ev">
+      <span class="ev-name">Intuitive Surgical</span><span class="ev-when">21:30 · depois do fecho</span>
+      <div class="ev-desc">Resultados do 3.º trimestre. Fabrica o robô cirúrgico «da Vinci». Como sai depois do fecho de Nova Iorque, a reação do mercado só se vê na quarta-feira.</div>
+    </div>
   </div>
 
   <!-- F&G + VIX lado a lado -->
